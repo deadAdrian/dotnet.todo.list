@@ -34,19 +34,6 @@ docker compose up -d --build
 - API Base URL: `http://localhost:8080/api`
 - Swagger UI: **[http://localhost:8080/swagger](http://localhost:8080/swagger)**
 
-#### Option B: Running Locally with .NET SDK
-
-1. Ensure a PostgreSQL instance is running locally or via Docker:
-   ```bash
-   docker run -d --name todo-postgres -p 5432:5432 -e POSTGRES_DB=TodoListDb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=@Admin123 postgres:16-alpine
-   ```
-2. Run the API:
-   ```bash
-   dotnet run
-   ```
-- Local URL: `http://localhost:5143/api`
-- Swagger UI: `http://localhost:5143/swagger`
-
 ---
 
 ### 2. Start the Frontend Web App
