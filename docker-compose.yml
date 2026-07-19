@@ -9,4 +9,28 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=TodoListDb;Username=postgres;Password=@Admin123
+    depends_on:
+      db:
+        condition: service_healthy
     restart: unless-stopped
+  
+  db:
+    image: postgres:16-alpine
+    container_name: todo-postgres-db
+    environment: 
+      POSTGRES_DB: TodoListDb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "@Admin123"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d TodoListDb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+volumes:
+  postgres_data:
+
