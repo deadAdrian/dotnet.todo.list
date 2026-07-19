@@ -24,6 +24,7 @@ public class TodoItemsController: ControllerBase
     public async Task<ActionResult<IEnumerable<TodoItemDTO>>> GetTodoItems()
     {
         return await _context.TodoItems
+            .OrderBy(x => x.IsComplete)
             .Select(x => _mapper.ToDTO(x))
             .ToListAsync();
     }
