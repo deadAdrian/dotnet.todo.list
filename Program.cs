@@ -5,7 +5,8 @@ using TodoList.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<TodoContext>(opt => 
-    opt.UseInMemoryDatabase("TodoList"));
+    opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.AddScoped<MappingService>();
 builder.Services.AddControllers();
 
@@ -23,6 +24,12 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.MapControllers();
+
+using(var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<TodoContext>();
+    await dbContext.Database.MigrateAsync();
+}
 
 app.Run();
 
