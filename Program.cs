@@ -13,7 +13,19 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+   options.AddPolicy("AllowFrontend", (policy) =>
+   {
+       policy.WithOrigins("http://localhost:3000")
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+   });
+});
+
 var app = builder.Build();
+
+app.UseCors("AllowFrontend");
 
 if (app.Environment.IsDevelopment())
 {
